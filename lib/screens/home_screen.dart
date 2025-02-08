@@ -1,57 +1,43 @@
 import 'package:flutter/material.dart';
-import 'appointments_screen.dart';
-import 'match_screen.dart';
-import 'profile_screen.dart';
 import 'dashboard_screen.dart';
+import 'match_screen.dart';
+import 'appointments_screen.dart';
+import 'profile_screen.dart';
+import 'settings_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-
-  // Liste des écrans accessibles via la barre inférieure
-  final List<Widget> _screens = [
+  final List<Widget> _screens = const [
     DashboardScreen(),
-    AppointmentsScreen(),
     MatchScreen(),
+    AppointmentsScreen(),
     ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const SettingsDrawer(),
       body: _screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        selectedItemColor: Colors.deepOrange,
-        unselectedItemColor: Colors.grey,
-        onTap: (index) {
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _currentIndex,
+        onDestinationSelected: (int index) {
           setState(() {
             _currentIndex = index;
           });
         },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Accueil",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.event),
-            label: "Rendez-vous",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: "Match",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profil",
-          ),
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.home), label: "Accueil"),
+          NavigationDestination(icon: Icon(Icons.favorite), label: "Match"),
+          NavigationDestination(icon: Icon(Icons.event), label: "Rendez-vous"),
+          NavigationDestination(icon: Icon(Icons.person), label: "Profil"),
         ],
       ),
     );

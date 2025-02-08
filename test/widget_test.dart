@@ -7,13 +7,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:dog_play_date/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('Vérifie le texte de bienvenue', (WidgetTester tester) async {
+    // Utilisez le nom correct du widget principal
+    await tester.pumpWidget(const DogPlayDateApp());
+    expect(find.text('Dog Play Date'), findsOneWidget);
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

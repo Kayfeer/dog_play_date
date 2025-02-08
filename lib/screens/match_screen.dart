@@ -1,14 +1,14 @@
+import 'package:dog_play_date/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 
 class MatchScreen extends StatefulWidget {
-  const MatchScreen({Key? key}) : super(key: key);
+  const MatchScreen({super.key});
 
   @override
-  _MatchScreenState createState() => _MatchScreenState();
+  State<MatchScreen> createState() => _MatchScreenState();
 }
 
 class _MatchScreenState extends State<MatchScreen> {
-  // Exemple de profils canins
   final List<Map<String, dynamic>> dogProfiles = [
     {
       "name": "Buddy",
@@ -26,77 +26,68 @@ class _MatchScreenState extends State<MatchScreen> {
 
   int currentIndex = 0;
 
-  void _swipeLeft() {
+  void _swipe() {
     setState(() {
-      if (currentIndex < dogProfiles.length - 1) currentIndex++;
-    });
-  }
-
-  void _swipeRight() {
-    setState(() {
-      if (currentIndex < dogProfiles.length - 1) currentIndex++;
+      if (currentIndex < dogProfiles.length - 1) {
+        currentIndex++;
+      } else {
+        currentIndex = 0; // Réinitialisation pour l'exemple
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (dogProfiles.isEmpty) {
-      return Center(child: Text("Aucun profil disponible."));
-    }
-
     final currentProfile = dogProfiles[currentIndex];
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Rencontre Canine"),
+        title: const Text("Rencontre Canine"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "Faites défiler pour trouver votre compagnon",
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 20),
-            // Carte de profil
-            Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.85,
-                height: MediaQuery.of(context).size.height * 0.55,
-                decoration: BoxDecoration(
+            // Carte de profil avec Hero pour transition vers le chat
+            Hero(
+              tag: 'chatHero',
+              child: Card(
+                elevation: 8,
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
-                  image: DecorationImage(
-                    image: AssetImage(currentProfile["image"]),
-                    fit: BoxFit.cover,
-                  ),
                 ),
                 child: Container(
+                  width: MediaQuery.of(context).size.width * 0.85,
+                  height: MediaQuery.of(context).size.height * 0.55,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.black.withOpacity(0.6),
-                        Colors.transparent,
-                      ],
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.center,
+                    image: DecorationImage(
+                      image: AssetImage(currentProfile["image"]),
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        "${currentProfile["name"]}, ${currentProfile["age"]} ans\n${currentProfile["bio"]}",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromARGB(255, 0, 0, 0).withValues(alpha: 0.1),
+                          Colors.transparent,
+                        ],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.center,
+                      ),
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          "${currentProfile["name"]}, ${currentProfile["age"]} ans\n${currentProfile["bio"]}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -104,21 +95,34 @@ class _MatchScreenState extends State<MatchScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 30),
-            // Boutons de swipe
+            const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FloatingActionButton(
                   backgroundColor: Colors.red,
-                  onPressed: _swipeLeft,
-                  child: Icon(Icons.close),
+                  onPressed: _swipe,
+                  child: const Icon(Icons.close),
                 ),
-                SizedBox(width: 40),
+                const SizedBox(width: 40),
                 FloatingActionButton(
                   backgroundColor: Colors.green,
-                  onPressed: _swipeRight,
-                  child: Icon(Icons.favorite),
+                  onPressed: () {
+                    // Transition vers l'écran de chat avec animation personnalisée.
+                    Navigator.of(context).push(PageRouteBuilder(
+                      transitionDuration: const Duration(milliseconds: 500),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const ChatScreen(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                    ));
+                  },
+                  child: const Icon(Icons.favorite),
                 ),
               ],
             ),

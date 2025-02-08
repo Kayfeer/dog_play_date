@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+// ignore_for_file: library_private_types_in_public_api
 
 class LocationScreen extends StatefulWidget {
-  const LocationScreen({Key? key}) : super(key: key);
+  const LocationScreen({super.key});
 
   @override
   _LocationScreenState createState() => _LocationScreenState();
@@ -15,6 +16,7 @@ class _LocationScreenState extends State<LocationScreen> {
     bool serviceEnabled;
     LocationPermission permission;
 
+    // Vérifie que le service de localisation est activé sur l'appareil.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       setState(() {
@@ -23,8 +25,10 @@ class _LocationScreenState extends State<LocationScreen> {
       return;
     }
 
+    // Vérifie la permission actuelle.
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
+      // Demande la permission à l'utilisateur.
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         setState(() {
@@ -34,6 +38,7 @@ class _LocationScreenState extends State<LocationScreen> {
       }
     }
 
+    // Si la permission est refusée définitivement.
     if (permission == LocationPermission.deniedForever) {
       setState(() {
         _locationMessage =
@@ -42,8 +47,10 @@ class _LocationScreenState extends State<LocationScreen> {
       return;
     }
 
+    // Récupère la position actuelle avec une précision élevée.
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
+    );
 
     setState(() {
       _locationMessage =
@@ -55,17 +62,17 @@ class _LocationScreenState extends State<LocationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ma position"),
+        title: const Text("Ma position"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(_locationMessage),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _getCurrentLocation,
-              child: Text("Récupérer ma position"),
+              child: const Text("Récupérer ma position"),
             ),
           ],
         ),

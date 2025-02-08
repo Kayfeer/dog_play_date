@@ -1,9 +1,12 @@
+// ignore_for_file: unused_field
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+// ignore_for_file: library_private_types_in_public_api
 
 class DogInfoScreen extends StatefulWidget {
-  const DogInfoScreen({Key? key}) : super(key: key);
+  const DogInfoScreen({super.key});
 
   @override
   _DogInfoScreenState createState() => _DogInfoScreenState();
@@ -28,7 +31,7 @@ class _DogInfoScreenState extends State<DogInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Informations sur le chien"),
+        title: const Text("Informations sur le chien"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -37,7 +40,7 @@ class _DogInfoScreenState extends State<DogInfoScreen> {
           child: ListView(
             children: [
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: "Sexe du chien"),
+                decoration: const InputDecoration(labelText: "Sexe du chien"),
                 items: ["Mâle", "Femelle"]
                     .map((sex) => DropdownMenuItem(
                           value: sex,
@@ -52,9 +55,9 @@ class _DogInfoScreenState extends State<DogInfoScreen> {
                 validator: (value) =>
                     value == null ? "Veuillez sélectionner le sexe" : null,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               SwitchListTile(
-                title: Text("En laisse"),
+                title: const Text("En laisse"),
                 value: _onLeash,
                 onChanged: (value) {
                   setState(() {
@@ -62,10 +65,10 @@ class _DogInfoScreenState extends State<DogInfoScreen> {
                   });
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _pickImage,
-                child: Text("Choisir une photo"),
+                child: const Text("Choisir une photo"),
               ),
               if (_dogPhoto != null)
                 Padding(
@@ -75,15 +78,15 @@ class _DogInfoScreenState extends State<DogInfoScreen> {
                     height: 150,
                   ),
                 ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Informations enregistrées")));
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Informations enregistrées")));
                   }
                 },
-                child: Text("Enregistrer"),
+                child: const Text("Enregistrer"),
               ),
             ],
           ),

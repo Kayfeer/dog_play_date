@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+// ignore_for_file: library_private_types_in_public_api
 
 class PhotoShareScreen extends StatefulWidget {
-  const PhotoShareScreen({Key? key}) : super(key: key);
+  const PhotoShareScreen({super.key});
 
   @override
   _PhotoShareScreenState createState() => _PhotoShareScreenState();
@@ -58,7 +59,7 @@ class _PhotoShareScreenState extends State<PhotoShareScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Partager une photo"),
+        title: const Text("Partager une photo"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -72,21 +73,22 @@ class _PhotoShareScreenState extends State<PhotoShareScreen> {
                 : Container(
                     height: 200,
                     color: Colors.grey[300],
-                    child: Center(child: Text("Aucune image sélectionnée")),
+                    child:
+                        const Center(child: Text("Aucune image sélectionnée")),
                   ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _pickPhoto,
-              child: Text("Sélectionner une photo"),
+              child: const Text("Sélectionner une photo"),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _isUploading
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : ElevatedButton(
                     onPressed: _uploadAndModeratePhoto,
-                    child: Text("Uploader et modérer"),
+                    child: const Text("Uploader et modérer"),
                   ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             if (_moderationResult.isNotEmpty)
               Text("Résultat de la modération : $_moderationResult"),
           ],

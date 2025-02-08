@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppointmentsScreen extends StatelessWidget {
-  const AppointmentsScreen({Key? key}) : super(key: key);
+  const AppointmentsScreen({super.key});
 
   final List<String> appointments = const [
     "Promenade au parc - 12/05/2025",
@@ -13,13 +13,13 @@ class AppointmentsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Mes rendez-vous"),
+        title: const Text("Mes rendez-vous"),
       ),
       body: ListView.builder(
         itemCount: appointments.length,
         itemBuilder: (context, index) {
           return ListTile(
-            leading: Icon(Icons.event),
+            leading: const Icon(Icons.event),
             title: Text(appointments[index]),
           );
         },
@@ -28,8 +28,8 @@ class AppointmentsScreen extends StatelessWidget {
         onPressed: () {
           // Ici, vous pourriez afficher un formulaire pour ajouter un rendez-vous.
         },
-        child: Icon(Icons.add),
         tooltip: "Ajouter un rendez-vous",
+        child: Icon(Icons.add),
       ),
     );
   }
